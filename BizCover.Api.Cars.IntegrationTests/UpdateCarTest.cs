@@ -24,7 +24,7 @@ namespace BizCover.Api.Cars.IntegrationTests
         }
 
         [Fact]
-        public async Task insert_car_should_add_car_to_repository()
+        public async Task update_car_should_update_car_information_in_repository()
         {
             // setup
             var givenId = 1;
