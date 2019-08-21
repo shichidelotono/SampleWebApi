@@ -37,7 +37,7 @@ namespace BizCover.Api.Cars.IntegrationTests
                 Price = 8000m,
                 Year = 2009
             };
-            var carBeforeUpdate = await _carsService.Get(1);
+            var carBeforeUpdate = await _carsService.Get(givenId);
 
             // act
             var result = await _carsController.Put(1, givenRequest);
@@ -45,7 +45,7 @@ namespace BizCover.Api.Cars.IntegrationTests
             var response = okResult.Value as AddCarResponse;
 
             // verify 
-            var carAfterUpdate = await _carsService.Get(1);
+            var carAfterUpdate = await _carsService.Get(givenId);
             Assert.Equal(200, okResult.StatusCode.Value);
             Assert.True(response.IsSuccess);
             Assert.Empty(response.ErrorMessage);
