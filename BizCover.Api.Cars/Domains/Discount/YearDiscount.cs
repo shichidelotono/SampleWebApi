@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace BizCover.Api.Cars.Domains.Discount
 {
-    public class YearDiscount : IDiscount
+    public class YearDiscount : IYearDiscount
     {
         private readonly IOptions<DiscountSetting> _discountSetting;
 

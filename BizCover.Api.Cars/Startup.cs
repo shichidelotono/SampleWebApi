@@ -23,9 +23,9 @@ namespace BizCover.Api.Cars
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<DiscountSetting>(Configuration.GetSection("DiscountSetting"));
-            services.AddSingleton<IDiscount, YearDiscount>();
-            services.AddSingleton<IDiscount, NumberOfCarsDiscount>();
-            services.AddSingleton<IDiscount, TotalAmountDiscount>();
+            services.AddSingleton<IYearDiscount, YearDiscount>();
+            services.AddSingleton<INumberOfCarsDiscount, NumberOfCarsDiscount>();
+            services.AddSingleton<ITotalAmountDiscount, TotalAmountDiscount>();
             services.AddSingleton<BizCover.Repository.Cars.ICarRepository, BizCover.Repository.Cars.CarRepository>();
             services.AddSingleton<ICarsRepository, CarsRepository>();
             services.AddSingleton<ICarsService, CarsService>();

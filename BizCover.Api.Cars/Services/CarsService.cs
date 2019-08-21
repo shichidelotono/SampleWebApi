@@ -25,7 +25,7 @@ namespace BizCover.Api.Cars.Services
         {
             try
             {
-                var existingCar = Get(carDomain.Id.Value).Result;
+                var existingCar = await Get(carDomain.Id.Value);
 
                 if (existingCar == null)
                 {

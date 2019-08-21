@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace BizCover.Api.Cars.Domains.Discount
 {
-    public class TotalAmountDiscount : IDiscount
+    public class TotalAmountDiscount : ITotalAmountDiscount
     {
         private readonly IOptions<DiscountSetting> _discountSetting;
 

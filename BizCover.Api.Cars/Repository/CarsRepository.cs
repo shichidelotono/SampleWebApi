@@ -23,7 +23,7 @@ namespace BizCover.Api.Cars.Repository
 
         public async Task<List<CarDomain>> GetAll()
         {
-            var cars = _carsMemoryCache.GetOrAdd(carsKey, () => _bizCoverCarRepository.GetAllCars().Result);
+            var cars = await _carsMemoryCache.GetOrAdd(carsKey, () => _bizCoverCarRepository.GetAllCars());
 
             var result = new List<CarDomain>();
 
@@ -43,7 +43,7 @@ namespace BizCover.Api.Cars.Repository
         {
             var totalNumberOfCarsInRepository = await _bizCoverCarRepository.Add(carDomain.ToCar());
 
-            _carsMemoryCache.Refresh(carsKey, () => _bizCoverCarRepository.GetAllCars().Result);
+            await _carsMemoryCache.Refresh(carsKey, () => _bizCoverCarRepository.GetAllCars());
 
             return totalNumberOfCarsInRepository;
         }
@@ -54,7 +54,7 @@ namespace BizCover.Api.Cars.Repository
             {
                 await _bizCoverCarRepository.Update(carDomain.ToCar());
 
-                _carsMemoryCache.Refresh(carsKey, () => _bizCoverCarRepository.GetAllCars().Result);
+                await _carsMemoryCache.Refresh(carsKey, () => _bizCoverCarRepository.GetAllCars());
             }
             catch (Exception)
             {
@@ -66,7 +66,7 @@ namespace BizCover.Api.Cars.Repository
 
         public async Task<CarDomain> Get(int id)
         {
-            var cars = _carsMemoryCache.GetOrAdd(carsKey, () => _bizCoverCarRepository.GetAllCars().Result);
+            var cars = await _carsMemoryCache.GetOrAdd(carsKey, () => _bizCoverCarRepository.GetAllCars());
 
             return cars?.FirstOrDefault(c => c.Id == id)?.ToCarDomain();
         }

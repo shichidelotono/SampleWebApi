@@ -1,9 +1,6 @@
 ﻿using BizCover.Api.Cars.Domains;
 using BizCover.Api.Cars.Domains.Discount;
-using Microsoft.Extensions.DependencyInjection;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BizCover.Api.Cars.Services
@@ -11,16 +8,16 @@ namespace BizCover.Api.Cars.Services
     public class PriceService : IPriceService
     {
         private readonly ICarsService _carsService;
+        private IYearDiscount _yearDiscount;
+        private INumberOfCarsDiscount _numberOfCarsDiscount;
+        private ITotalAmountDiscount _totalAmountDiscount;
 
-        public PriceService(ICarsService carsService, IServiceProvider serviceProvider)
+        public PriceService(ICarsService carsService, IYearDiscount yearDiscount, INumberOfCarsDiscount numberOfCarsDiscount, ITotalAmountDiscount totalAmountDiscount)
         {
             _carsService = carsService;
-
-            var services = serviceProvider.GetServices<IDiscount>();
-
-            YearDiscount = services.First(o => o.GetType() == typeof(YearDiscount));
-            NumberOfCarsDiscount = services.First(o => o.GetType() == typeof(NumberOfCarsDiscount));
-            TotalAmountDiscount = services.First(o => o.GetType() == typeof(TotalAmountDiscount));
+            _yearDiscount = yearDiscount;
+            _numberOfCarsDiscount = numberOfCarsDiscount;
+            _totalAmountDiscount = totalAmountDiscount;
         }
 
         public async Task<decimal> CalculateSalePrice(IEnumerable<int> carIds)
@@ -30,17 +27,11 @@ namespace BizCover.Api.Cars.Services
             foreach (var id in carIds)
                 cars.Add(await _carsService.Get(id));
 
-            var price = YearDiscount.Apply(cars, null);
-            price = NumberOfCarsDiscount.Apply(cars, price);
-            price = TotalAmountDiscount.Apply(cars, price);
+            var price = _yearDiscount.Apply(cars, null);
+            price = _numberOfCarsDiscount.Apply(cars, price);
+            price = _totalAmountDiscount.Apply(cars, price);
 
             return price;
         }
-
-        public IDiscount YearDiscount { get; set; }
-
-        public IDiscount NumberOfCarsDiscount { get; set; }
-
-        public IDiscount TotalAmountDiscount { get; set; }
     }
 }
